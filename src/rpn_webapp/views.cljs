@@ -21,4 +21,5 @@
                  :on-change #(re-frame/dispatch [::events/input-changed (-> % .-target .-value)])}]]
        [:input {:type      "submit"
                 :on-click #(re-frame/dispatch [::events/input-submit])}]
-       [:button {:on-click #(re-frame/dispatch [::events/sum-submit])} "+"]]))
+       [:button {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]
+       [:button {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "-"]]))
