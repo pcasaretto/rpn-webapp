@@ -22,29 +22,26 @@
          (assoc :stack (conj (:stack db) input-value))
          (assoc :input "")))))
 
+(defn singular-stack-operation
+  [operation stack]
+  (let
+      [first (peek stack)
+       stack (pop stack)
+       second (peek stack)
+       stack (pop stack)
+       value (operation second first)
+       stack (conj stack value)]
+      stack))
+
 (re-frame/reg-event-db
  ::operation-submit
  (fn [db [_ operation-name]]
    (cond
      (= :subtract operation-name)
-     (let
-         [stack (:stack db)
-          first (peek stack)
-          stack (pop stack)
-          second (peek stack)
-          stack (pop stack)
-          value (- second first)
-          stack (conj stack value)]
-        (-> db
-           (assoc :stack stack)))
+     (update db :stack (partial singular-stack-operation -))
      (= :sum operation-name)
-     (let
-         [stack (:stack db)
-          first (peek stack)
-          stack (pop stack)
-          second (peek stack)
-          stack (pop stack)
-          value (+ second first)
-          stack (conj stack value)]
-        (-> db
-           (assoc :stack stack))))))
+     (update db :stack (partial singular-stack-operation +))
+     (= :multiply operation-name)
+     (update db :stack (partial singular-stack-operation *))
+     (= :divide operation-name)
+     (update db :stack (partial singular-stack-operation /)))))
