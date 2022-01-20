@@ -7,6 +7,7 @@
  :dependencies
  [[reagent "1.1.0"]
   [re-frame "1.2.0"]
+  [cljs-styled-components "0.1.11"]
 
   [binaryage/devtools "1.0.3"]
   [re-frisk "1.5.1"]
@@ -29,7 +30,7 @@
    :dev
    {:compiler-options
     {:closure-defines
-     { }}}}
+     {}}}}
   :browser-test
   {:target    :browser-test
    :ns-regexp "-test$"
