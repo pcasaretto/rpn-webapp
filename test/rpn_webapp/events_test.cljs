@@ -41,3 +41,27 @@
     (rf/dispatch [::sut/operation-submit :subtract])
     (let [stack (rf/subscribe [::subs/stack])]
         (t/is (= [-11] @stack)))))
+
+(t/deftest multiply-test
+  (rf-test/run-test-sync
+    (rf/dispatch [::sut/digit-clicked 1])
+    (rf/dispatch [::sut/digit-clicked 3])
+    (rf/dispatch [::sut/input-submit])
+    (rf/dispatch [::sut/digit-clicked 2])
+    (rf/dispatch [::sut/digit-clicked 4])
+    (rf/dispatch [::sut/input-submit])
+    (rf/dispatch [::sut/operation-submit :multiply])
+    (let [stack (rf/subscribe [::subs/stack])]
+        (t/is (= [312] @stack)))))
+
+(t/deftest divide-test
+  (rf-test/run-test-sync
+    (rf/dispatch [::sut/digit-clicked 1])
+    (rf/dispatch [::sut/digit-clicked 2])
+    (rf/dispatch [::sut/input-submit])
+    (rf/dispatch [::sut/digit-clicked 2])
+    (rf/dispatch [::sut/digit-clicked 4])
+    (rf/dispatch [::sut/input-submit])
+    (rf/dispatch [::sut/operation-submit :divide])
+    (let [stack (rf/subscribe [::subs/stack])]
+        (t/is (= [0.5] @stack)))))

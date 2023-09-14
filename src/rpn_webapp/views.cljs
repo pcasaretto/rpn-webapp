@@ -30,10 +30,24 @@
    :justify-content "flex-start"
    :align-items "center"})
 
-(defn digits-panel [f]
-  (map (fn [value] [:button {:on-click #((f value))} value]) (range 10)))
+(defstyled Keyboard
+  :div
+  {
+   :display "flex"
+   :flex-direction "column"
+   :align-content "stretch"
+   :align-items "stretch"
+   "> *" {:margin-block 0}
+   "> * + *" {:margin-block-start "1.5rem"}})
 
-   
+(defstyled KeyboardLine
+  :div
+  {
+   :display "flex"
+   :align-content "stretch"
+   :align-items "stretch"})
+
+
 (defn main-panel []
   (let
       [
@@ -47,15 +61,28 @@
             (map-indexed (fn [idx value] [:li {:key idx} value]) @stack)]
            [Cluster
              [:div.required.field
-              [:label "Label"]
               [:input {:type      "text"
                        :value     @input
-                       :on-change #(re-frame/dispatch [::events/input-changed (-> % .-target .-value)])}]
-              [:input {:type      "submit"
-                       :on-click #(re-frame/dispatch [::events/input-submit])}]]]]
-         (digits-panel #(re-frame/dispatch [::events/digit-clicked %]))
-         [Cluster
-          [:button {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]
-          [:button {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "-"]
-          [:button {:on-click #(re-frame/dispatch [::events/operation-submit :multiply])} "*"]
-          [:button {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "/"]]]]))
+                       :disabled  true
+                       :on-change #(re-frame/dispatch [::events/input-changed (-> % .-target .-value)])}]]]
+           [Keyboard
+             [Cluster
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 7])} "7"]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 8])} "8"]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 9])} "9"]
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]]
+             [Cluster
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 4])} "4"]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 5])} "5"]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 6])} "6"]
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "-"]]
+             [Cluster
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 1])} "1"]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 2])} "2"]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 3])} "3"]
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :multiply])} "x"]]
+             [Cluster
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 0])} "0"]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked "."])} "."]
+               [:button {:on-click #(re-frame/dispatch [::events/input-submit])} "Enter"]
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "/"]]]]]]))

@@ -24,14 +24,10 @@
 
 (defn singular-stack-operation
   [operation stack]
-  (let
-      [first (peek stack)
-       stack (pop stack)
-       second (peek stack)
-       stack (pop stack)
-       value (operation second first)
-       stack (conj stack value)]
-      stack))
+  (->> (take 2 stack)       ; Get the top two values from the stack
+       (reverse)            ; Reverse them to get the right order
+       (apply operation)    ; Apply the operation on them
+       (conj (drop 2 stack)))) ; Push the result back onto the stack
 
 (re-frame/reg-event-db
  ::digit-clicked
