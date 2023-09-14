@@ -31,7 +31,7 @@
    :align-items "center"})
 
 (defn digits-panel [f]
-  (map (fn [value] [:button {:on-click #((f value))} value]) (range 9)))
+  (map (fn [value] [:button {:on-click #((f value))} value]) (range 10)))
 
    
 (defn main-panel []
