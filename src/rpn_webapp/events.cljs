@@ -34,6 +34,12 @@
       stack))
 
 (re-frame/reg-event-db
+ ::digit-clicked
+ (fn [db [_ digit]]
+   (-> db
+       (update :input str digit))))
+
+(re-frame/reg-event-db
  ::operation-submit
  (fn [db [_ operation-name]]
    (cond

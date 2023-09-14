@@ -30,6 +30,10 @@
    :justify-content "flex-start"
    :align-items "center"})
 
+(defn digits-panel [f]
+  (map (fn [value] [:button {:on-click #((f value))} value]) (range 9)))
+
+   
 (defn main-panel []
   (let
       [
@@ -49,6 +53,7 @@
                        :on-change #(re-frame/dispatch [::events/input-changed (-> % .-target .-value)])}]
               [:input {:type      "submit"
                        :on-click #(re-frame/dispatch [::events/input-submit])}]]]]
+         (digits-panel #(re-frame/dispatch [::events/digit-clicked %]))
          [Cluster
           [:button {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]
           [:button {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "-"]

@@ -9,6 +9,7 @@
   [re-frame "1.2.0"]
   [cljs-styled-components "0.1.11"]
 
+  [day8.re-frame/test "0.1.5"]
   [binaryage/devtools "1.0.3"]
   [re-frisk "1.5.1"]
   [cider/cider-nrepl "0.26.0"]]
