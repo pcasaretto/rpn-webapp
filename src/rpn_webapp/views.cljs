@@ -70,19 +70,19 @@
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 7])} "7"]
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 8])} "8"]
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 9])} "9"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]]
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "÷"]
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :multiply])} "×"]]
              [Cluster
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 4])} "4"]
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 5])} "5"]
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 6])} "6"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "-"]]
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "−"]]
              [Cluster
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 1])} "1"]
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 2])} "2"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 3])} "3"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :multiply])} "x"]]
+               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 3])} "3"]]
              [Cluster
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 0])} "0"]
                [:button {:on-click #(re-frame/dispatch [::events/digit-clicked "."])} "."]
                [:button {:on-click #(re-frame/dispatch [::events/input-submit])} "Enter"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "/"]]]]]]))
+               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]]]]]]))
