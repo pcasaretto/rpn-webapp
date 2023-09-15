@@ -1,7 +1,7 @@
 (ns rpn-webapp.views
   (:require
    [re-frame.core :as re-frame]
-   [cljs-styled-components.reagent :refer [defstyled defkeyframes theme-provider clj-props set-default-theme!]]
+   [dv.cljs-emotion-reagent :refer [jsx css defstyled keyframes global-style theme-provider]]
    [rpn-webapp.subs :as subs]
    [rpn-webapp.events :as events]))
 
@@ -10,16 +10,31 @@
   {
    :box-sizing "content-box"
    :margin-inline "auto"
-   :max-inline-size "var(--measure, 60ch)"})
+   :max-inline-size "var(--measure, 60ch)"
+   :height "95vh"
+   :display "flex"
+   :flex-direction "column"
+   :justify-content "flex-end"
+   :align-items "center"})
+   
+(defstyled ScrollableStack
+  :div
+  {
+   :display "flex"
+   :flex-direction "column-reverse"  ; Reverse the column direction
+   :justify-content "flex-start"
+   :flex "1 1 auto"
+   :overflow-y "auto"
+   "> *" {:margin-block 0}
+   "> * + *" {:margin-block-start "1.5rem"}})
 
-(defstyled Stack
+(defstyled InputKeyboardSection
   :div
   {
    :display "flex"
    :flex-direction "column"
-   :justify-content "flex-start"
-   "> *" {:margin-block 0}
-   "> * + *" {:margin-block-start "1.5rem"}})
+   :flex "0 0 auto"})  ; This ensures the section doesn't grow and takes only the required space
+   
 
 (defstyled Cluster
   :div
@@ -27,7 +42,7 @@
    :display "flex"
    :flex-wrap "wrap"
    :gap "var(--space, 1rem)"
-   :justify-content "flex-start"
+   :justify-content "center"
    :align-items "center"})
 
 (defstyled Keyboard
@@ -40,12 +55,21 @@
    "> *" {:margin-block 0}
    "> * + *" {:margin-block-start "1.5rem"}})
 
-(defstyled KeyboardLine
-  :div
+(defstyled KeyboardButton
+  :button
   {
-   :display "flex"
-   :align-content "stretch"
-   :align-items "stretch"})
+   :flex "1 1 0px"
+   :min-width "60px"  ; Minimum button width
+   :min-height "60px"  ; Minimum button height
+   :font-size "1.5rem"})  ; Larger font size for better visibility
+
+
+;; Update the input style for better visibility on larger screens
+(defstyled LargeInput
+  :input
+  {
+   :font-size "1.5rem"  ; Larger font size for input
+   :padding "0.5rem"})
 
 
 (defn main-panel []
@@ -54,35 +78,36 @@
        name (re-frame/subscribe [::subs/name])
        stack (re-frame/subscribe [::subs/stack])
        input (re-frame/subscribe [::subs/input])]
-      [Center
-       [Cluster
-         [Stack
-           [:ol
-            (map-indexed (fn [idx value] [:li {:key idx} value]) @stack)]
-           [Cluster
-             [:div.required.field
-              [:input {:type      "text"
-                       :value     @input
-                       :disabled  true
-                       :on-change #(re-frame/dispatch [::events/input-changed (-> % .-target .-value)])}]]]
-           [Keyboard
-             [Cluster
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 7])} "7"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 8])} "8"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 9])} "9"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "÷"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :multiply])} "×"]]
-             [Cluster
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 4])} "4"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 5])} "5"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 6])} "6"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "−"]]
-             [Cluster
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 1])} "1"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 2])} "2"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 3])} "3"]]
-             [Cluster
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked 0])} "0"]
-               [:button {:on-click #(re-frame/dispatch [::events/digit-clicked "."])} "."]
-               [:button {:on-click #(re-frame/dispatch [::events/input-submit])} "Enter"]
-               [:button {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]]]]]]))
+    [Center
+     [ScrollableStack
+      [:ol
+       {:reversed true}
+       (map-indexed (fn [idx value] [:li {:key idx} value]) @stack)]]
+     [InputKeyboardSection
+      [Cluster
+        [:div.required.field
+           [LargeInput {:type      "text"
+                        :value     @input
+                        :disabled  true
+                        :on-change #(re-frame/dispatch [::events/input-changed (-> % .-target .-value)])}]]
+        [Keyboard
+         [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 7])} "7"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 8])} "8"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 9])} "9"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "÷"]]
+         [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 4])} "4"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 5])} "5"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 6])} "6"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :multiply])} "×"]]
+         [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 1])} "1"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 2])} "2"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 3])} "3"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :subtract])} "−"]]
+         [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 0])} "0"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked "."])} "."]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/input-submit])} "Enter"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :sum])} "+"]]]]]]))

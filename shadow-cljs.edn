@@ -7,7 +7,7 @@
  :dependencies
  [[reagent "1.1.0"]
   [re-frame "1.2.0"]
-  [cljs-styled-components "0.1.11"]
+  [dv/cljs-emotion "2023-07-16.0.0"]
 
   [day8.re-frame/test "0.1.5"]
   [binaryage/devtools "1.0.3"]

@@ -19,7 +19,7 @@
  (fn [db _]
    (let [ input-value (js/parseFloat (:input db))]
      (-> db
-         (assoc :stack (conj (:stack db) input-value))
+         (update :stack #(conj % input-value))
          (assoc :input "")))))
 
 (defn singular-stack-operation
