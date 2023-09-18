@@ -17,10 +17,12 @@
 (re-frame/reg-event-db
  ::input-submit
  (fn [db _]
-   (let [ input-value (js/parseFloat (:input db))]
-     (-> db
-         (update :stack #(conj % input-value))
-         (assoc :input "")))))
+   (let [input-value (js/parseFloat (:input db))]
+     (if (js/isNaN input-value)
+       db ; if the input is not a valid number, just return the original db without modification
+       (-> db
+           (update :stack #(conj % input-value))
+           (assoc :input ""))))))
 
 (defn singular-stack-operation
   [operation stack]

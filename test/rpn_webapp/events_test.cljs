@@ -13,6 +13,7 @@
 
 (t/deftest digits-test
   (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
     (rf/dispatch [::sut/digit-clicked "1"])
     (rf/dispatch [::sut/digit-clicked "3"])
     (let [input (rf/subscribe [::subs/input])]
@@ -20,6 +21,14 @@
 
 (t/deftest submit-test
   (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
+    (rf/dispatch [::sut/input-submit])
+    (let [stack (rf/subscribe [::subs/stack])
+          input (rf/subscribe [::subs/input])]
+        (t/is (= "" @input))
+        (t/is (= '() @stack))))
+  (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
     (rf/dispatch [::sut/digit-clicked "1"])
     (rf/dispatch [::sut/digit-clicked "3"])
     (rf/dispatch [::sut/input-submit])
@@ -28,6 +37,7 @@
         (t/is (= "" @input))
         (t/is (= '( 13 ) @stack))))
   (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
     (rf/dispatch [::sut/digit-clicked "1"])
     (rf/dispatch [::sut/digit-clicked "3"])
     (rf/dispatch [::sut/input-submit])
@@ -39,6 +49,7 @@
 
 (t/deftest sum-test
   (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
     (rf/dispatch [::sut/digit-clicked "1"])
     (rf/dispatch [::sut/digit-clicked "3"])
     (rf/dispatch [::sut/input-submit])
@@ -51,6 +62,7 @@
 
 (t/deftest subtract-test
   (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
     (rf/dispatch [::sut/digit-clicked "1"])
     (rf/dispatch [::sut/digit-clicked "3"])
     (rf/dispatch [::sut/input-submit])
@@ -63,6 +75,7 @@
 
 (t/deftest multiply-test
   (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
     (rf/dispatch [::sut/digit-clicked "1"])
     (rf/dispatch [::sut/digit-clicked "3"])
     (rf/dispatch [::sut/input-submit])
@@ -75,6 +88,7 @@
 
 (t/deftest divide-test
   (rf-test/run-test-sync
+    (rf/dispatch [::sut/initialize-db])
     (rf/dispatch [::sut/digit-clicked "1"])
     (rf/dispatch [::sut/digit-clicked "2"])
     (rf/dispatch [::sut/input-submit])
