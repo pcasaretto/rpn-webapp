@@ -92,16 +92,30 @@
                         :on-change #(re-frame/dispatch [::events/input-changed (-> % .-target .-value)])}]]
         [Keyboard
          [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :pop])} "POP"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :sqrt])} "√ "]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 7])} "7"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 8])} "8"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 9])} "9"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "÷"]]
          [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :swap])} "SWAP"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :power])} "x"
+           [:sup "y"]]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 7])} "7"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 8])} "8"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 9])} "9"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :divide])} "÷"]]
+         [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :negate])} "+/-"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :inverse])} "1/x"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 4])} "4"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 5])} "5"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 6])} "6"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :multiply])} "×"]]
          [Cluster
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :summation])} "Σ"]
+          [KeyboardButton {:on-click #(re-frame/dispatch [::events/operation-submit :factorial])} "x!"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 1])} "1"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 2])} "2"]
           [KeyboardButton {:on-click #(re-frame/dispatch [::events/digit-clicked 3])} "3"]
