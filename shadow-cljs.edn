@@ -12,7 +12,7 @@
   [day8.re-frame/test "0.1.5"]
   [binaryage/devtools "1.0.3"]
   [re-frisk "1.5.1"]
-  [cider/cider-nrepl "0.26.0"]]
+  [cider/cider-nrepl "0.30.0"]]
 
  :dev-http
  {8280 "resources/public"
